@@ -127,26 +127,29 @@ function processMessage(event) {
 
 function displayMenu(userId, msg){
   message = {
-    attachment:{
-      type: "template",
-      buttons: [
-        {
-          "type": "postback",
-          "title": "ข้อมูลงานวิ่ง และการสมัคร",
-          "payload": "Info"
-        },
-        {
-          "type": "postback",
-          "title": "การรับ BIB",
-          "payload": "Bib"
-        },
-        {
-          "type": "postback",
-          "title": "ติดต่อทีมงาน",
-          "payload": "Livechat"
-        },
-
-      ]
+    "attachment":{
+      "type": "template",
+      "payload":{
+        "template_type":"button",
+        "text":"กรุณาเลือกจากเมนูด้านล่าง",
+        "buttons": [
+          {
+            "type": "postback",
+            "title": "ข้อมูลงานวิ่ง และการสมัคร",
+            "payload": "Info"
+          },
+          {
+            "type": "postback",
+            "title": "การรับ BIB",
+            "payload": "Bib"
+          },
+          {
+            "type": "postback",
+            "title": "ติดต่อทีมงาน",
+            "payload": "Livechat"
+          }
+        ]
+      }
     }
   }
   sendMessage(userId, message);
