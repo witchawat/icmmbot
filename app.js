@@ -79,8 +79,27 @@ function processPostback(event) {
         name = bodyObj.first_name;
         greeting = "สวัสดีค่ะคุณ " + name + "!\n";
       }
-      var message = greeting + "กรุณาพิมพ์ info เพื่อสอบถามข้อมูล หรือพิมพ์ help เพื่อติดต่อทีมงาน";
-      sendMessage(senderId, {text: message});
+      var message = {
+        "text": "" + greeting + "กรุณาพิมพ์ info เพื่อสอบถามข้อมูล หรือพิมพ์ help เพื่อติดต่อทีมงาน",
+        "quick_replies":[
+        {
+          "content_type":"text",
+          "title":"ข้อมูลการสมัคร",
+          "payload":"Info"
+        },
+        {
+          "content_type":"text",
+          "title":"การรับ BIB",
+          "payload":"Bib"
+        },
+        {
+          "content_type":"text",
+          "title":"ติดต่อทีมงาน",
+          "payload":"Livechat"
+        }
+      ]
+      }
+      sendMessage(senderId, message);
     });
   } else if (payload === "Info"){
     sendMessage(senderId, {text: MSG_INFO});
@@ -135,7 +154,7 @@ function displayMenu(userId, msg){
         "buttons": [
           {
             "type": "postback",
-            "title": "ข้อมูลงานวิ่ง และการสมัคร",
+            "title": "ข้อมูล/การสมัคร",
             "payload": "Info"
           },
           {
