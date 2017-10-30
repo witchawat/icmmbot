@@ -8,6 +8,26 @@ var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\nวันงาน �
 var MSG_BIB = "รับ BIB ได้ที่งาน ICMM Expo วันเสาร์ที่ 13 ม.ค. 61\nโดยมารับด้วยตัวเอง หรือรับแทน (บัตรปชชและเลข BIB)\nไม่มีการจัดส่งทางไปรษณีย์ค่ะ"
 
 var MSG_LIVECHAT = "กำลังทดสอบ"
+
+var MSG_QUICK_REPLY = {
+  "quick_replies":[
+  {
+    "content_type":"text",
+    "title":"ข้อมูลการสมัคร",
+    "payload":"Info"
+  },
+  {
+    "content_type":"text",
+    "title":"การรับ BIB",
+    "payload":"Bib"
+  },
+  {
+    "content_type":"text",
+    "title":"ติดต่อทีมงาน",
+    "payload":"Livechat"
+  }
+  ]
+}
 //END OF MESSAGE SETTING--------------------------------------------------------
 
 
@@ -81,23 +101,7 @@ function processPostback(event) {
       }
       var message = {
         "text": "" + greeting + "กรุณาพิมพ์ info เพื่อสอบถามข้อมูล หรือพิมพ์ help เพื่อติดต่อทีมงาน",
-        "quick_replies":[
-        {
-          "content_type":"text",
-          "title":"ข้อมูลการสมัคร",
-          "payload":"Info"
-        },
-        {
-          "content_type":"text",
-          "title":"การรับ BIB",
-          "payload":"Bib"
-        },
-        {
-          "content_type":"text",
-          "title":"ติดต่อทีมงาน",
-          "payload":"Livechat"
-        }
-      ]
+        MSG_QUICK_REPLY
       }
       sendMessage(senderId, message);
     });
@@ -126,11 +130,13 @@ function processMessage(event) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding movie detail.
       // Otherwise, search for new movie.
+      if formattedMsg == "ข้อมูลการสมัคร"
       switch (formattedMsg) {
         case "info":
           displayMenu(senderId, formattedMsg);
           break;
-        case "pricexx":
+        case "ข้อมูลการสมัคร":
+        case "info":
         case "ratingxx":
           // getMovieDetail(senderId, formattedMsg);
           break;
@@ -145,33 +151,8 @@ function processMessage(event) {
 }
 
 function displayMenu(userId, msg){
-  message = {
-    "attachment":{
-      "type": "template",
-      "payload":{
-        "template_type":"button",
-        "text":"กรุณาเลือกจากเมนูด้านล่าง",
-        "buttons": [
-          {
-            "type": "postback",
-            "title": "ข้อมูล/การสมัคร",
-            "payload": "Info"
-          },
-          {
-            "type": "postback",
-            "title": "การรับ BIB",
-            "payload": "Bib"
-          },
-          {
-            "type": "postback",
-            "title": "ติดต่อทีมงาน",
-            "payload": "Livechat"
-          }
-        ]
-      }
-    }
-  }
-  sendMessage(userId, message);
+  var message = MSG_QUICK_REPLY
+  sendMessage(senderId, message);
 }
 
 // sends message to user
