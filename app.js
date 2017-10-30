@@ -149,7 +149,7 @@ function processMessage(event) {
   }
 }
 
-function displayMenu(userId, msg){
+function displayMenu(senderId, msg){
   var message = MSG_QUICK_REPLY
   sendMessage(senderId, message);
 }
