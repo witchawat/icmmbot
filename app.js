@@ -42,7 +42,7 @@ app.post("/webhook", function (req, res) {
     // There may be multiple entries if batched
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
-      if(entry.messaging){ // ADDED
+      // if(entry.messaging){ // ADDED
       entry.messaging.forEach(function(event) {
         if (event.postback) {
           processPostback(event);
@@ -50,9 +50,8 @@ app.post("/webhook", function (req, res) {
           processMessage(event);
         }
       });
-    } //ADDED
+    // } //ADDED
     });
-
     res.sendStatus(200);
   }
 });
