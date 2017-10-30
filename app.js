@@ -40,6 +40,10 @@ app.post("/webhook", function (req, res) {
   if (req.body.object === "page") {
     // Iterate over each entry
     // There may be multiple entries if batched
+    console.log("ENTRY");
+    console.log(req.body.entry);
+    console.log("MSGING");
+    console.log(req.body.entry.messaging[0]);
     req.body.entry.forEach(function(entry) {
       let webhook_event = entry.messaging[0];
       if (webhook_event.postback) {
