@@ -2,6 +2,21 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 
+//MESSAGE SETTING --------------------------------------------------------------
+var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\n
+วันงาน อาทิตย์ที่ 14 ม.ค. 61\n
+เปิดรับสมัครพิเศษเฉพาะศิษย์เก่า 23-31 ต.ค. 60\n
+ชำระเงิน 23 ต.ค. - 7 พ.ย. 60 ราคา 550 บาททุกระยะ (fun run ประมาณ 5 กม.  & mini marathon ประมาณ 10 กม.) ค่ะ"
+
+var MSG_BIB = "รับ BIB ได้ที่งาน ICMM Expo วันเสาร์ที่ 13 ม.ค. 61\n
+โดยมารับด้วยตัวเอง หรือรับแทน (บัตรปชชและเลข BIB)\n
+ไม่มีการจัดส่งทางไปรษณีย์ค่ะ"
+
+var MSG_LIVECHAT = "กำลังทดสอบ"
+//END OF MESSAGE SETTING--------------------------------------------------------
+
+
+
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -35,6 +50,8 @@ app.post("/webhook", function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.postback) {
           processPostback(event);
+        } else if (event.message){
+          processMessage(event);
         }
       });
     });
@@ -66,9 +83,15 @@ function processPostback(event) {
         name = bodyObj.first_name;
         greeting = "สวัสดีค่ะคุณ " + name + "!\n";
       }
-      var message = greeting + "กรุณาพิมพ์ help เพื่อสอบถามข้อมูล";
+      var message = greeting + "กรุณาพิมพ์ info เพื่อสอบถามข้อมูล หรือพิมพ์ help เพื่อติดต่อทีมงาน";
       sendMessage(senderId, {text: message});
     });
+  } else if (payload === "Info"){
+    sendMessage(senderId, {text: MSG_INFO});
+  } else if (payload === "Bib"){
+    sendMessage(senderId, {text: MSG_BIB});
+  } else if (payload === "Livechat"){
+    sendMessage(senderId, {text: MSG_LIVECHAT});
   }
 }
 
@@ -87,4 +110,64 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
+}
+
+function processMessage(event) {
+  if (!event.message.is_echo) {
+    var message = event.message;
+    var senderId = event.sender.id;
+
+    console.log("Received message from senderId: " + senderId);
+    console.log("Message is: " + JSON.stringify(message));
+
+    // You may get a text or attachment but not both
+    if (message.text) {
+      var formattedMsg = message.text.toLowerCase().trim();
+
+      // If we receive a text message, check to see if it matches any special
+      // keywords and send back the corresponding movie detail.
+      // Otherwise, search for new movie.
+      switch (formattedMsg) {
+        case "info":
+          displayMenu(senderId, formattedMsg);
+          break;
+        case "pricexx":
+        case "ratingxx":
+          // getMovieDetail(senderId, formattedMsg);
+          break;
+
+        default:
+          break;
+      }
+    } else if (message.attachments) {
+      sendMessage(senderId, {text: "ขอโทษค่ะ ไม่สามารถรับไฟล์ได้"});
+    }
+  }
+}
+
+function displayMenu(userId, msg){
+  message = {
+    attachment:{
+      type: "template",
+      payload: {
+        {
+          "type": "postback",
+          "title": "ข้อมูลงานวิ่ง และการสมัคร",
+          "payload": "Info"
+        },
+        {
+          "type": "postback",
+          "title": "การรับ BIB",
+          "payload": "Bib"
+        },
+        {
+          "type": "postback",
+          "title": "ติดต่อทีมงาน",
+          "payload": "Livechat"
+        },
+
+      }
+    }
+  }
+  sendMessage(userId, message);
 }
