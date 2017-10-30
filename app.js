@@ -41,16 +41,12 @@ app.post("/webhook", function (req, res) {
     // Iterate over each entry
     // There may be multiple entries if batched
     req.body.entry.forEach(function(entry) {
-      // Iterate over each messaging event
-      // if(entry.messaging){ // ADDED
-      entry.messaging.forEach(function(event) {
-        if (event.postback) {
-          processPostback(event);
-        } else if (event.message){
-          processMessage(event);
-        }
-      });
-    // } //ADDED
+      let webhook_event = entry.messaging[0];
+      if (webhook_event.postback) {
+        processPostback(webhook_event);
+      } else if (webhook_event.message){
+        processMessage(webhook_event);
+      }
     });
     res.sendStatus(200);
   }
