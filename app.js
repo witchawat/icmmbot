@@ -7,7 +7,7 @@ var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\nวันงาน �
 
 var MSG_BIB = "รับ BIB ได้ที่งาน ICMM Expo วันเสาร์ที่ 13 ม.ค. 61\nโดยมารับด้วยตัวเอง หรือรับแทน (บัตรปชชและเลข BIB)\nไม่มีการจัดส่งทางไปรษณีย์ค่ะ"
 
-var MSG_LIVECHAT = "กำลังทดสอบ"
+var MSG_LIVECHAT = "เริ่มต้น Live Chat\nกำลังติดต่อทีมงาน..."
 //END OF MESSAGE SETTING--------------------------------------------------------
 
 
@@ -117,7 +117,7 @@ function processMessage(event) {
           sendMessage(senderId, {text: MSG_BIB});
           break;
         case "help":
-          sendMessage(senderId, {text: MSG_LIVECHAT});
+          sendHandover(senderId, {text: MSG_LIVECHAT});
 
         default:
           break;
@@ -146,6 +146,26 @@ function sendMessage(recipientId, message) {
   }, function(error, response, body) {
     if (error) {
       console.log("Error sending message: " + response.error);
+    }
+  });
+}
+
+// FB Handover Protocol to Real Admin
+function sendHandover(recipientId, message){
+  request({
+    url: "https://graph.facebook.com/v2.6/me/messages",
+    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    method: "POST",
+    json: {
+      recipient: {id: recipientId},
+      target_app_id : 263902037430900,
+      message: message,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log("Error sending message: " + response.error);
+    } else {
+      console.log(">>> Hand over to Real ADMIN INBOX <<<")
     }
   });
 }
