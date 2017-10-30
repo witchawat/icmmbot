@@ -144,7 +144,7 @@ function displayMenu(userId, msg){
   message = {
     attachment:{
       type: "template",
-      payload: {
+      buttons: [
         {
           "type": "postback",
           "title": "ข้อมูลงานวิ่ง และการสมัคร",
@@ -161,7 +161,7 @@ function displayMenu(userId, msg){
           "payload": "Livechat"
         },
 
-      }
+      ]
     }
   }
   sendMessage(userId, message);
