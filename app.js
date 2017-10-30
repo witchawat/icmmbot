@@ -3,7 +3,7 @@ var request = require("request");
 var bodyParser = require("body-parser");
 
 //MESSAGE SETTING --------------------------------------------------------------
-var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\nวันงาน อาทิตย์ที่ 14 ม.ค. 61\nเปิดรับสมัครพิเศษเฉพาะศิษย์เก่า 23-31 ต.ค. 60\nชำระเงิน 23 ต.ค. - 7 พ.ย. 60 ราคา 550 บาททุกระยะ (fun run ประมาณ 5 กม.  & mini marathon ประมาณ 10 กม.) ค่ะ"
+var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\nวันงาน อาทิตย์ที่ 14 ม.ค. 61\n\nรายละเอียดรอประกาศเพิ่มเติมจากทาง Page นะคะ"
 
 var MSG_BIB = "รับ BIB ได้ที่งาน ICMM Expo วันเสาร์ที่ 13 ม.ค. 61\nโดยมารับด้วยตัวเอง หรือรับแทน (บัตรปชชและเลข BIB)\nไม่มีการจัดส่งทางไปรษณีย์ค่ะ"
 
