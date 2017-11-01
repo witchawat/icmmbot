@@ -2,6 +2,11 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 var exphbs  = require('express-handlebars');
+var mongoose = require('mongoose');
+
+//MongoDB
+var db = mongoose.connect(process.env.MONGODB_URI);
+var Command = require("./models/command");
 
 //MESSAGE SETTING --------------------------------------------------------------
 var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\nวันงาน อาทิตย์ที่ 14 ม.ค. 61\n\nรายละเอียด รอประกาศเพิ่มจากทาง Page นะคะ"
@@ -11,7 +16,7 @@ var MSG_BIB = "รับ BIB ได้ที่งาน ICMM Expo วันเ�
 var MSG_LIVECHAT = "เริ่มต้น Live Chat\nกำลังติดต่อทีมงาน..."
 //END OF MESSAGE SETTING--------------------------------------------------------
 
-
+var MONG
 
 var app = express();
 
@@ -192,7 +197,7 @@ function botTakeover(recipientId){
 }
 
 function getCommand(senderId, cmd){
-  Commands.findOne({name:cmd}, function(err, reply){
+  Command.findOne({name:cmd}, function(err, reply){
     if(err){
       sendMessage(userId, {text: "Bot ไม่สามารถใช้งานได้ในขณะนี้\nกรุณารอทีมงานติดต่อกลับค่ะ"});
     } else {
