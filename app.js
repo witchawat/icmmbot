@@ -205,7 +205,6 @@ function getCommand(senderId, cmd){
     } else {
       return
     }
-    }
-  });
+  })
 
 }
