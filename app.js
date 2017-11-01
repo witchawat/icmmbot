@@ -119,18 +119,13 @@ function processMessage(event) {
     // You may get a text or attachment but not both
     if (message.text) {
       var formattedMsg = message.text.toLowerCase().trim();
-
+      var re = new RegExp("\b\w{1,7}\b");
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding movie detail.
       // Otherwise, search for new movie.
-      switch (formattedMsg) {
-        case "infotest":
-          sendMessage(senderId, {text: MSG_INFO});
-          break;
-
-        default:
-          getCommand(senderId, formattedMsg);
-      }
+      if (re.test(formattedMsg)){
+        getCommand(senderId, formattedMsg);
+      } 
     } else if (message.attachments) {
       sendMessage(senderId, {text: "ขอโทษค่ะ ไม่สามารถรับไฟล์ได้"});
     }
