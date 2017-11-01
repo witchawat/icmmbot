@@ -199,9 +199,9 @@ function botTakeover(recipientId){
 function getCommand(senderId, cmd){
   Command.findOne({name:cmd}, function(err, reply){
     if(err){
-      sendMessage(userId, {text: "Bot ไม่สามารถใช้งานได้ในขณะนี้\nกรุณารอทีมงานติดต่อกลับค่ะ"});
+      sendMessage(senderId, {text: "Bot ไม่สามารถใช้งานได้ในขณะนี้\nกรุณารอทีมงานติดต่อกลับค่ะ"});
     } else {
-      sendMessage(userId, {text: reply.text});
+      sendMessage(senderId, {text: reply.text});
     }
   });
 
