@@ -197,11 +197,15 @@ function botTakeover(recipientId){
 }
 
 function getCommand(senderId, cmd){
-  Command.findOne({name:cmd}, function(err, reply){
+  Command.findOne({'name':cmd}, function(err, reply){
     if(err){
       sendMessage(senderId, {text: "Bot ไม่สามารถใช้งานได้ในขณะนี้\nกรุณารอทีมงานติดต่อกลับค่ะ"});
     } else {
+      if(reply.text){
       sendMessage(senderId, {text: reply.text});
+    }else {
+      return
+    }
     }
   });
 
