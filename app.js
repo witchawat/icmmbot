@@ -124,8 +124,9 @@ function processMessage(event) {
       // keywords and send back the corresponding movie detail.
       // Otherwise, search for new movie.
       if (re.test(formattedMsg)){
+        console.log('Command >> ' + formattedMsg);
         getCommand(senderId, formattedMsg);
-      } 
+      }
     } else if (message.attachments) {
       sendMessage(senderId, {text: "ขอโทษค่ะ ไม่สามารถรับไฟล์ได้"});
     }
@@ -195,7 +196,7 @@ function getCommand(senderId, cmd){
   Command.findOne({'name':cmd}, function(err, reply){
     if(err){
       sendMessage(senderId, {text: "Bot ไม่สามารถใช้งานได้ในขณะนี้\nกรุณารอทีมงานติดต่อกลับค่ะ"});
-    } else if (reply.text !== null){
+    } else if (reply){
       sendMessage(senderId, {text: reply.text});
     } else {
       return
