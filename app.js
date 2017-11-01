@@ -1,6 +1,7 @@
 var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
+var exphbs  = require('express-handlebars');
 
 //MESSAGE SETTING --------------------------------------------------------------
 var MSG_INFO = "งาน Intania Chula Mini Marathon 2018\nวันงาน อาทิตย์ที่ 14 ม.ค. 61\n\nรายละเอียด รอประกาศเพิ่มจากทาง Page นะคะ"
@@ -13,13 +14,17 @@ var MSG_LIVECHAT = "เริ่มต้น Live Chat\nกำลังติด
 
 
 var app = express();
+
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.listen((process.env.PORT || 5000));
+app.listen((process.env.PORT || 3000));
 
 // Server index page
 app.get("/", function (req, res) {
-  res.send("Deployed!");
+  res.render('home');
 });
 
 // Facebook Webhook
@@ -114,17 +119,12 @@ function processMessage(event) {
       // keywords and send back the corresponding movie detail.
       // Otherwise, search for new movie.
       switch (formattedMsg) {
-        case "info":
+        case "infotest":
           sendMessage(senderId, {text: MSG_INFO});
           break;
-        case "bib":
-          sendMessage(senderId, {text: MSG_BIB});
-          break;
-        case "help":
-          sendHandover(senderId, {text: MSG_LIVECHAT});
 
         default:
-          break;
+          getCommand(senderId, formattedMsg);
       }
     } else if (message.attachments) {
       sendMessage(senderId, {text: "ขอโทษค่ะ ไม่สามารถรับไฟล์ได้"});
@@ -189,4 +189,15 @@ function botTakeover(recipientId){
       console.log(">>> TAKE CONTROL BACK from Real ADMIN <<<")
     }
   });
+}
+
+function getCommand(senderId, cmd){
+  Commands.findOne({name:cmd}, function(err, reply){
+    if(err){
+      sendMessage(userId, {text: "Bot ไม่สามารถใช้งานได้ในขณะนี้\nกรุณารอทีมงานติดต่อกลับค่ะ"});
+    } else {
+      sendMessage(userId, {text: reply.text});
+    }
+  });
+
 }
