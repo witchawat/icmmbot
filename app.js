@@ -97,8 +97,13 @@ function processPostback(event) {
             greeting = greeting + "กรุณาพิมพ์ข้อความ เพื่อสอบถามข้อมูล\n\ninfo - ข้อมูลงานวิ่ง\nbib - การรับ BIB\nhelp - ติดต่อทีมงาน";
             sendMessage(senderId, {"text": greeting});
           } else {
-            greeting = greeting + reply.text
-            sendMessage(senderId, {"text": greeting});
+            if(reply){
+              greeting = greeting + reply.text
+              sendMessage(senderId, {"text": greeting});
+            } else {
+              greeting = greeting + "กรุณาพิมพ์ข้อความ เพื่อสอบถามข้อมูล\n\ninfo - ข้อมูลงานวิ่ง\nbib - การรับ BIB\nhelp - ติดต่อทีมงาน";
+              sendMessage(senderId, {"text": greeting});
+            }
           }
         });
       };
