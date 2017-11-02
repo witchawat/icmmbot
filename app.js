@@ -92,7 +92,7 @@ function processPostback(event) {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
         greeting = "สวัสดีค่ะคุณ " + name + "!\n";
-        Command.findOne({'name':'greetingText'}, function(err, reply){
+        Command.findOne({'name':'greetingtext'}, function(err, reply){
           if(err){
             greeting = greeting + "กรุณาพิมพ์ข้อความ เพื่อสอบถามข้อมูล\n\ninfo - ข้อมูลงานวิ่ง\nbib - การรับ BIB\nhelp - ติดต่อทีมงาน";
             sendMessage(senderId, {"text": greeting});
