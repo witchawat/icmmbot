@@ -92,11 +92,16 @@ function processPostback(event) {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
         greeting = "สวัสดีค่ะคุณ " + name + "!\n";
-      }
-      var message = {
-        "text": "" + greeting + "กรุณาพิมพ์ข้อความ เพื่อสอบถามข้อมูล\n\ninfo - ข้อมูลงานวิ่ง\nbib - การรับ BIB\nhelp - ติดต่อทีมงาน"
-      }
-      sendMessage(senderId, message);
+        Command.findOne({'name':'greetingText'}, function(err, reply){
+          if(err){
+            greeting = greeting + "กรุณาพิมพ์ข้อความ เพื่อสอบถามข้อมูล\n\ninfo - ข้อมูลงานวิ่ง\nbib - การรับ BIB\nhelp - ติดต่อทีมงาน";
+            sendMessage(senderId, {"text": greeting});
+          } else {
+            greeting = greeting + reply.text
+            sendMessage(senderId, {"text": greeting});
+          }
+        });
+      };
     });
   } else if (payload === "Info"){
     sendMessage(senderId, {text: MSG_INFO});
