@@ -138,7 +138,7 @@ function processMessage(event) {
         getCommand(senderId, formattedMsg);
       }
     } else if (message.attachments) {
-      sendMessage(senderId, {text: "ขอโทษค่ะ ไม่สามารถรับไฟล์ได้"});
+      // sendMessage(senderId, {text: "ขอโทษค่ะ ไม่สามารถรับไฟล์ได้"});
     }
   }
 }
